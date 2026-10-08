@@ -4,18 +4,15 @@ import com.sparta.delivery.menu.dto.request.CreateMenuRequest;
 import com.sparta.delivery.menu.dto.response.MenuResponse;
 import com.sparta.delivery.menu.entity.Menu;
 import com.sparta.delivery.menu.repository.MenuRepository;
-import com.sparta.delivery.user.dto.response.UserResponse;
 import com.sparta.delivery.user.entity.User;
 import com.sparta.delivery.user.entity.UserRole;
 import com.sparta.delivery.user.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -27,11 +24,11 @@ public class MenuService {
     @Transactional
     public MenuResponse createMenu(Long loginUserId, CreateMenuRequest request) {
         // owner 만 등록 가능 : 회원 유형 확인
-        // token에서 누구껀지 확인
+        // TODO: token에서 누구껀지 확인
         User user = userRepository.findById(loginUserId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        if(user.getUserRole() != UserRole.OWNER)
+        if (user.getUserRole() != UserRole.OWNER)
             throw new IllegalArgumentException("사장님만 메뉴를 등록할 수 있습니다.");
 
         // 메뉴 담기
@@ -44,9 +41,15 @@ public class MenuService {
         return MenuResponse.form(menuRepository.save(menu));
     }
 
+    @Transactional(readOnly = true)
     public List<MenuResponse> getAllMenu() {
-        List<MenuResponse> menuList = menuRepository.findAllByDeletedFalse();
-        return menuList;
+        return menuRepository.findAllByDeletedFalse();
+    }
+
+    @Transactional(readOnly = true)
+    public MenuResponse getMenu(Long id) {
+        Menu getMenu = menuRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메뉴입니다."));
+        return MenuResponse.form(getMenu);
     }
 }
 

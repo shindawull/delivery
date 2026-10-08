@@ -32,10 +32,14 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    //TODO: 단건 조회(상세조회)
+    @GetMapping("/{id}")
+    public ResponseEntity<MenuResponse> getMenu(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(menuService.getMenu(id));
+    }
 
     //TODO: 수정 (owner)
 
     //TODO: 삭제(soft delete, owner)
+
 
 }
