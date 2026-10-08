@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SignupRequest {
-    @NotBlank
+    @NotBlank(message = "아이디를 입력해주세요.")
     @Size(min = 4, max = 20)
     private String username;
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(message = "비밀번호를 입력해주세요.")
+    @Size(min = 8, message = "비밀번호는 8자 이상 입력해주세요.")
     private String password;
-    @NotNull
+    @NotNull(message = "회원 유형을 선택해주세요. ( CUSTOMER 또는 OWNER )")
     private UserRole userRole;
 
     public SignupRequest(String username, String password, UserRole userRole) {

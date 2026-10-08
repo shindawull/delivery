@@ -10,9 +10,11 @@ import com.sparta.delivery.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -27,7 +29,7 @@ public class UserService {
     public UserResponse signUp(SignupRequest request) {
         // 아이디 중복 확인
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 사용중인 아이디입니다.");
         }
 
         // 회원 유형 확인
@@ -46,12 +48,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public String login(LoginRequest request, HttpServletResponse res) {
         // 회원 존재 유무 확인
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "존재하지 않는 아이디입니다."));
 
         // 비밀번호 확인
         boolean checkPassword = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!checkPassword) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
         }
 
         // JWT 생성 및 쿠키에 저장 후 response 객체에 추가

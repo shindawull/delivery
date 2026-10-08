@@ -9,8 +9,10 @@ import com.sparta.delivery.user.entity.UserRole;
 import com.sparta.delivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -26,10 +28,10 @@ public class MenuService {
         // owner 만 등록 가능 : 회원 유형 확인
         // TODO: token에서 누구껀지 확인
         User user = userRepository.findById(loginUserId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "존재하지 않는 회원입니다."));
 
         if (user.getUserRole() != UserRole.OWNER)
-            throw new IllegalArgumentException("사장님만 메뉴를 등록할 수 있습니다.");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사장님만 메뉴를 등록할 수 있습니다.");
 
         // 메뉴 담기
         Menu menu = new Menu(
@@ -48,7 +50,7 @@ public class MenuService {
 
     @Transactional(readOnly = true)
     public MenuResponse getMenu(Long id) {
-        Menu getMenu = menuRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 메뉴입니다."));
+        Menu getMenu = menuRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 메뉴입니다."));
         return MenuResponse.form(getMenu);
     }
 }
