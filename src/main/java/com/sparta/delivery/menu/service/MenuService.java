@@ -8,11 +8,13 @@ import com.sparta.delivery.user.dto.response.UserResponse;
 import com.sparta.delivery.user.entity.User;
 import com.sparta.delivery.user.entity.UserRole;
 import com.sparta.delivery.user.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -42,5 +44,9 @@ public class MenuService {
         return MenuResponse.form(menuRepository.save(menu));
     }
 
+    public List<MenuResponse> getAllMenu() {
+        List<MenuResponse> menuList = menuRepository.findAllByDeletedFalse();
+        return menuList;
+    }
 }
 

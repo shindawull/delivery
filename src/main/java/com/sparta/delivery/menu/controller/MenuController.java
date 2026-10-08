@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/menu")
@@ -24,10 +26,11 @@ public class MenuController {
         return ResponseEntity.status(HttpStatus.CREATED).body(menuService.createMenu(loginUserId, request));
     }
 
-    //TODO: 목록 조회
-   /* public ResponseEntity<MenuResponse> getMenu(@Valid @RequestBody CreateMenuRequest request) {
-
-    }*/
+    @GetMapping("")
+    public ResponseEntity<List<MenuResponse>> getAllMenu() {
+        List<MenuResponse> result = menuService.getAllMenu();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
     //TODO: 단건 조회(상세조회)
 
