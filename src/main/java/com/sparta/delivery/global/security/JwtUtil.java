@@ -1,7 +1,7 @@
 package com.sparta.delivery.global.security;
 
 
-import com.sparta.delivery.user.entity.UserType;
+import com.sparta.delivery.user.entity.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 
@@ -49,7 +48,7 @@ public class JwtUtil {
     }
 
     // 1. 생성
-    public String createToken(String username, UserType userRole) {
+    public String createToken(String username, UserRole userRole) {
         Date date = new Date();
 
         return BEARER_PREFIX +

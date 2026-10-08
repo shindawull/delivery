@@ -4,7 +4,7 @@ import com.sparta.delivery.global.security.JwtUtil;
 import com.sparta.delivery.user.dto.request.LoginRequest;
 import com.sparta.delivery.user.dto.request.SignupRequest;
 import com.sparta.delivery.user.dto.response.UserResponse;
-import com.sparta.delivery.user.entity.UserType;
+import com.sparta.delivery.user.entity.UserRole;
 import com.sparta.delivery.user.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/create-jwt")
     public String createJwt(HttpServletResponse res) {
         // Jwt 생성
-        String token = jwtUtil.createToken("Robbie", UserType.CUSTOMER);
+        String token = jwtUtil.createToken("Robbie", UserRole.CUSTOMER);
 
         // Jwt 쿠키 저장
         jwtUtil.addJwtToCookie(token, res);

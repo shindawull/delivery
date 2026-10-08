@@ -25,15 +25,16 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserType userType;
+    private UserRole userRole;
 
-    /**
-     * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
-     */
-    public User(String username, String password, UserType userType) {
+    public boolean isOwner() {
+        return this.userRole == UserRole.OWNER;
+    }
+
+    public User(String username, String password, UserRole userRole) {
         this.username = username;
         this.password = password;
-        this.userType = userType;
+        this.userRole = userRole;
     }
     /**
      * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.

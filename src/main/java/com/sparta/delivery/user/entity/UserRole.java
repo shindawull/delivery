@@ -1,12 +1,12 @@
 package com.sparta.delivery.user.entity;
 
-public enum UserType {
+public enum UserRole {
     CUSTOMER(Authority.CUSTOMER), // 손님
     OWNER(Authority.OWNER);  // 사장님
 
     private final String authority;
 
-    UserType(String authority) {
+    UserRole(String authority) {
         this.authority = authority;
     }
     public String getAuthority() {

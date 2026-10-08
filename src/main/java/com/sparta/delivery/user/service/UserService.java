@@ -5,7 +5,7 @@ import com.sparta.delivery.user.dto.request.LoginRequest;
 import com.sparta.delivery.user.dto.request.SignupRequest;
 import com.sparta.delivery.user.dto.response.UserResponse;
 import com.sparta.delivery.user.entity.User;
-import com.sparta.delivery.user.entity.UserType;
+import com.sparta.delivery.user.entity.UserRole;
 import com.sparta.delivery.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +31,14 @@ public class UserService {
         }
 
         // 회원 유형 확인
-        UserType userType = request.getUserType();
-        if (userType != UserType.CUSTOMER && userType != UserType.OWNER)
+        UserRole userRole = request.getUserRole();
+        if (userRole != UserRole.CUSTOMER && userRole != UserRole.OWNER)
             throw new IllegalArgumentException("회원 유형을 확인해주세요. (CUSTOMER or OWNER)");
 
         User user = new User(
                 request.getUsername(),
                 passwordEncoder.encode(request.getPassword()),
-                request.getUserType()
+                request.getUserRole()
         );
         return UserResponse.form(userRepository.save(user));
     }
@@ -55,7 +55,7 @@ public class UserService {
         }
 
         // JWT 생성 및 쿠키에 저장 후 response 객체에 추가
-        String token = jwtUtil.createToken(user.getUsername(), user.getUserType());
+        String token = jwtUtil.createToken(user.getUsername(), user.getUserRole());
         jwtUtil.addJwtToCookie(token,  res);
 
         return user.getUsername();

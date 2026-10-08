@@ -1,7 +1,7 @@
 package com.sparta.delivery.user.dto.response;
 
 import com.sparta.delivery.user.entity.User;
-import com.sparta.delivery.user.entity.UserType;
+import com.sparta.delivery.user.entity.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,7 +13,7 @@ public class UserResponse {
     private Long id;
     private String username;
     private String password;
-    private UserType userType;
+    private UserRole userRole;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
@@ -21,7 +21,7 @@ public class UserResponse {
         return UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .userType(user.getUserType())
+                .userRole(user.getUserRole())
                 .createdDate(user.getCreatedDate())
                 .modifiedDate(user.getModifiedDate())
                 .build();

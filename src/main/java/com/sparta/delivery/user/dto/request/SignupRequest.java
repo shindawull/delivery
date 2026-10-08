@@ -1,6 +1,6 @@
 package com.sparta.delivery.user.dto.request;
 
-import com.sparta.delivery.user.entity.UserType;
+import com.sparta.delivery.user.entity.UserRole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,12 +17,12 @@ public class SignupRequest {
     @Size(min = 8)
     private String password;
     @NotNull
-    private UserType userType;
+    private UserRole userRole;
 
-    public SignupRequest(String username, String password, UserType userType) {
+    public SignupRequest(String username, String password, UserRole userRole) {
         this.username = username;
         this.password = password;
-        this.userType = userType;
+        this.userRole = userRole;
     }
 }
 
