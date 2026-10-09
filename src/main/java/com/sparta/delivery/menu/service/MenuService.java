@@ -24,22 +24,16 @@ public class MenuService {
     private final UserRepository userRepository;
 
     @Transactional
-    public MenuResponse createMenu(Long loginUserId, CreateMenuRequest request) {
-        // owner 만 등록 가능 : 회원 유형 확인
-        // TODO: token에서 누구껀지 확인
-        User user = userRepository.findById(loginUserId)
+    public MenuResponse createMenu(User user, CreateMenuRequest request) {
+
+        userRepository.findById(user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "존재하지 않는 회원입니다."));
 
-        if (user.getUserRole() != UserRole.OWNER)
+        if (!UserRole.OWNER.equals(user.getUserRole()))
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사장님만 메뉴를 등록할 수 있습니다.");
 
-        // 메뉴 담기
-        Menu menu = new Menu(
-                request.getName(),
-                request.getPrice(),
-                request.getDescription(),
-                user
-        );
+        Menu menu = new Menu(request.getName(), request.getPrice(), request.getDescription(), user);
+
         return MenuResponse.form(menuRepository.save(menu));
     }
 

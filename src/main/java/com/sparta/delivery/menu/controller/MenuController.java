@@ -3,6 +3,8 @@ package com.sparta.delivery.menu.controller;
 import com.sparta.delivery.menu.dto.request.CreateMenuRequest;
 import com.sparta.delivery.menu.dto.response.MenuResponse;
 import com.sparta.delivery.menu.service.MenuService;
+import com.sparta.delivery.user.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +21,10 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
-    //등록 (owner)
     @PostMapping("")
-    public ResponseEntity<MenuResponse> createMenu(@RequestHeader("loginUserId") Long loginUserId,
-                                                   @Valid @RequestBody CreateMenuRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(menuService.createMenu(loginUserId, request));
+    public ResponseEntity<MenuResponse> createMenu(HttpServletRequest req, @Valid @RequestBody CreateMenuRequest request) {
+        User user = (User) req.getAttribute("user");
+        return ResponseEntity.status(HttpStatus.CREATED).body(menuService.createMenu(user, request));
     }
 
     @GetMapping("")
