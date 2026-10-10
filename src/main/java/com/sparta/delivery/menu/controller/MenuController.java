@@ -1,5 +1,6 @@
 package com.sparta.delivery.menu.controller;
 
+import com.sparta.delivery.global.security.UserDetailsImpl;
 import com.sparta.delivery.menu.dto.request.CreateMenuRequest;
 import com.sparta.delivery.menu.dto.response.MenuResponse;
 import com.sparta.delivery.menu.service.MenuService;
@@ -10,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +25,16 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
+    @GetMapping("/role")
+    public String menu(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("MenuController.menu : ",  userDetails.getUsername());
+        model.addAttribute("username", userDetails.getUsername());
+        return "성공";
+    }
+
     @PostMapping("")
-    public ResponseEntity<MenuResponse> createMenu(HttpServletRequest req, @Valid @RequestBody CreateMenuRequest request) {
+    public ResponseEntity<MenuResponse> createMenu(HttpServletRequest req,
+                                                   @Valid @RequestBody CreateMenuRequest request) {
         User user = (User) req.getAttribute("user");
         return ResponseEntity.status(HttpStatus.CREATED).body(menuService.createMenu(user, request));
     }

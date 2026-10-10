@@ -9,11 +9,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.swing.*;
 
-@Configuration
-@EnableWebSecurity
+
+
 public class SecurityConfig {
 
-    @Bean
+
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)

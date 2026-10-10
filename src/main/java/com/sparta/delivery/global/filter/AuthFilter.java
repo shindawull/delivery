@@ -1,6 +1,6 @@
 package com.sparta.delivery.global.filter;
 
-import com.sparta.delivery.global.security.JwtUtil;
+import com.sparta.delivery.global.jwt.JwtUtil;
 import com.sparta.delivery.user.entity.User;
 import com.sparta.delivery.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 @Order(2)
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter implements Filter {
+public class AuthFilter implements Filter {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
@@ -59,3 +59,4 @@ public class JwtAuthenticationFilter implements Filter {
         }
     }
 }
+

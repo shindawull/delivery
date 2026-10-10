@@ -1,6 +1,6 @@
 package com.sparta.delivery.user.controller;
 
-import com.sparta.delivery.global.security.JwtUtil;
+import com.sparta.delivery.global.jwt.JwtUtil;
 import com.sparta.delivery.user.dto.request.LoginRequest;
 import com.sparta.delivery.user.dto.request.SignupRequest;
 import com.sparta.delivery.user.dto.response.UserResponse;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -26,11 +26,6 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<UserResponse> signUp(@Valid @RequestBody SignupRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUp(request));
-    }
-
-    @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequest request, HttpServletResponse res) {
-        return userService.login(request, res);
     }
 
     @GetMapping("/create-jwt")
@@ -65,7 +60,5 @@ public class UserController {
 
         return "getJwt : " + username + ", " + authority;
     }
-
-
 
 }

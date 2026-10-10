@@ -1,4 +1,4 @@
-package com.sparta.delivery.global.security;
+package com.sparta.delivery.global.jwt;
 
 
 import com.sparta.delivery.user.entity.UserRole;

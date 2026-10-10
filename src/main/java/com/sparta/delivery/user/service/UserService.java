@@ -1,6 +1,6 @@
 package com.sparta.delivery.user.service;
 
-import com.sparta.delivery.global.security.JwtUtil;
+import com.sparta.delivery.global.jwt.JwtUtil;
 import com.sparta.delivery.user.dto.request.LoginRequest;
 import com.sparta.delivery.user.dto.request.SignupRequest;
 import com.sparta.delivery.user.dto.response.UserResponse;
@@ -45,7 +45,7 @@ public class UserService {
         return UserResponse.form(userRepository.save(user));
     }
 
-    @Transactional(readOnly = true)
+   /* @Transactional(readOnly = true)
     public String login(LoginRequest request, HttpServletResponse res) {
         // 회원 존재 유무 확인
         User user = userRepository.findByUsername(request.getUsername())
@@ -62,5 +62,5 @@ public class UserService {
         jwtUtil.addJwtToCookie(token,  res);
 
         return user.getUsername();
-    }
+    }*/
 }
