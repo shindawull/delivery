@@ -25,13 +25,6 @@ import java.util.List;
 public class MenuController {
     private final MenuService menuService;
 
-    @GetMapping("/role")
-    public String menu(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        log.info("MenuController.menu : ",  userDetails.getUsername());
-        model.addAttribute("username", userDetails.getUsername());
-        return "성공";
-    }
-
     @PostMapping("")
     public ResponseEntity<MenuResponse> createMenu(HttpServletRequest req,
                                                    @Valid @RequestBody CreateMenuRequest request) {
